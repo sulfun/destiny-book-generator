@@ -24,6 +24,13 @@ from scrapers.human_design import calculate_human_design
 from interpreter import generate_all_chapters, generate_all_chapters_offline
 from pdf_generator import generate_pdf
 
+try:
+    import gspread
+    from google.oauth2.service_account import Credentials
+    GSHEETS_AVAILABLE = True
+except ImportError:
+    GSHEETS_AVAILABLE = False
+
 # === 앱 설정 ===
 st.set_page_config(
     page_title="운명책 | The Book of Destiny",
@@ -32,12 +39,67 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# === 데이터 디렉토리 ===
-DATA_DIR = Path("data")
-ORDERS_DIR = DATA_DIR / "orders"
-OUTPUT_DIR = DATA_DIR / "output"
-for d in [DATA_DIR, ORDERS_DIR, OUTPUT_DIR]:
-    d.mkdir(parents=True, exist_ok=True)
+# === 데이터 디렉토리 (로컬 폴백용) ===
+OUTPUT_DIR = Path("data/output")
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+# === Google Sheets 연결 ===
+SHEET_COLUMNS = [
+    "order_id", "status", "created_at", "updated_at",
+    "name_kr", "name_en", "email", "phone", "gender",
+    "year", "month", "day", "hour", "minute",
+    "city", "notes", "chart_data"
+]
+
+@st.cache_resource(ttl=300)
+def get_gsheet_client():
+    """Google Sheets 클라이언트 생성"""
+    if not GSHEETS_AVAILABLE:
+        return None
+    try:
+        creds_dict = dict(st.secrets["gcp_service_account"])
+        scopes = [
+            "https://www.googleapis.com/auth/spreadsheets",
+            "https://www.googleapis.com/auth/drive",
+        ]
+        creds = Credentials.from_service_account_info(creds_dict, scopes=scopes)
+        client = gspread.authorize(creds)
+        return client
+    except Exception as e:
+        st.sidebar.warning(f"Google Sheets 연결 실패: {e}")
+        return None
+
+def get_worksheet():
+    """주문 워크시트 가져오기 (없으면 생성)"""
+    client = get_gsheet_client()
+    if client is None:
+        return None
+    try:
+        sheet_url = st.secrets.get("sheet_url", "")
+        if sheet_url:
+            spreadsheet = client.open_by_url(sheet_url)
+        else:
+            sheet_name = st.secrets.get("sheet_name", "운명책_주문관리")
+            try:
+                spreadsheet = client.open(sheet_name)
+            except gspread.SpreadsheetNotFound:
+                spreadsheet = client.create(sheet_name)
+                spreadsheet.share(st.secrets.get("admin_email", "help@sulfun.com"),
+                                  perm_type='user', role='writer')
+
+        # 워크시트 가져오기/생성
+        try:
+            worksheet = spreadsheet.worksheet("주문목록")
+        except gspread.WorksheetNotFound:
+            worksheet = spreadsheet.add_worksheet(title="주문목록", rows=1000, cols=len(SHEET_COLUMNS))
+            worksheet.update('A1', [SHEET_COLUMNS])
+            # 헤더 서식
+            worksheet.format('A1:Q1', {'textFormat': {'bold': True}})
+
+        return worksheet
+    except Exception as e:
+        st.sidebar.warning(f"시트 접근 실패: {e}")
+        return None
 
 # === 스타일 ===
 st.markdown("""
@@ -114,38 +176,66 @@ CITY_OPTIONS = {
 
 
 def save_order(order_data):
-    """주문 저장"""
+    """주문 저장 → Google Sheets"""
     order_id = datetime.now().strftime("%Y%m%d_%H%M%S")
     order_data["order_id"] = order_id
     order_data["status"] = "pending"
     order_data["created_at"] = datetime.now().isoformat()
+    order_data["updated_at"] = ""
+    order_data["chart_data"] = ""
 
-    order_path = ORDERS_DIR / f"{order_id}.json"
-    with open(order_path, 'w', encoding='utf-8') as f:
-        json.dump(order_data, f, ensure_ascii=False, indent=2, default=str)
-
+    ws = get_worksheet()
+    if ws:
+        row = [str(order_data.get(col, "")) for col in SHEET_COLUMNS]
+        ws.append_row(row, value_input_option='USER_ENTERED')
     return order_id
 
 
 def load_orders():
-    """모든 주문 불러오기"""
-    orders = []
-    for f in sorted(ORDERS_DIR.glob("*.json"), reverse=True):
-        with open(f, 'r', encoding='utf-8') as fh:
-            orders.append(json.load(fh))
-    return orders
+    """모든 주문 불러오기 ← Google Sheets"""
+    ws = get_worksheet()
+    if ws is None:
+        return []
+    try:
+        records = ws.get_all_records()
+        # 최신순 정렬
+        records.sort(key=lambda x: x.get("created_at", ""), reverse=True)
+        return records
+    except Exception as e:
+        st.warning(f"주문 로드 실패: {e}")
+        return []
 
 
 def update_order_status(order_id, new_status):
-    """주문 상태 업데이트"""
-    order_path = ORDERS_DIR / f"{order_id}.json"
-    if order_path.exists():
-        with open(order_path, 'r', encoding='utf-8') as f:
-            order = json.load(f)
-        order["status"] = new_status
-        order["updated_at"] = datetime.now().isoformat()
-        with open(order_path, 'w', encoding='utf-8') as f:
-            json.dump(order, f, ensure_ascii=False, indent=2, default=str)
+    """주문 상태 업데이트 → Google Sheets"""
+    ws = get_worksheet()
+    if ws is None:
+        return
+    try:
+        cell = ws.find(str(order_id))
+        if cell:
+            row = cell.row
+            # status 컬럼 (B), updated_at 컬럼 (D)
+            status_col = SHEET_COLUMNS.index("status") + 1
+            updated_col = SHEET_COLUMNS.index("updated_at") + 1
+            ws.update_cell(row, status_col, new_status)
+            ws.update_cell(row, updated_col, datetime.now().isoformat())
+    except Exception as e:
+        st.warning(f"상태 업데이트 실패: {e}")
+
+
+def save_chart_data(order_id, chart_data_json):
+    """차트 데이터를 시트에 저장"""
+    ws = get_worksheet()
+    if ws is None:
+        return
+    try:
+        cell = ws.find(str(order_id))
+        if cell:
+            chart_col = SHEET_COLUMNS.index("chart_data") + 1
+            ws.update_cell(cell.row, chart_col, chart_data_json)
+    except Exception as e:
+        st.warning(f"차트 데이터 저장 실패: {e}")
 
 
 def collect_charts(data):
