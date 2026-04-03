@@ -366,13 +366,28 @@ def page_customer():
 
     st.markdown("""
     <div class="info-box">
-    12가지 동서양 운명학 시스템을 통합 분석하여<br>
-    당신만을 위한 운명의 책을 제작합니다.<br><br>
-    사주명리 · 서양점성학 · 베딕점성학 · 수비학 · 휴먼디자인 · 주역 · 타로 · 카발라 외
+    <strong>세상에 단 하나뿐인, 나로 살기 위한 책</strong><br><br>
+    이 책은 금전운, 연애운, 직업운을 점치는 운세책이 아닙니다.<br>
+    20년 이상 연구해 온 동서양 12종 운명학 시스템과 AI 분석을 결합하여<br>
+    <em>"한 인간의 구조와 가능성을 해석하는 운명 설계 보고서"</em>를 제작합니다.<br><br>
+    사주명리 · 서양점성학 · 베딕점성학 · 수비학 · 휴먼디자인 · 자미두수 · 타로 · 카발라 외<br><br>
+    <span style="color: #666; font-size: 0.9rem;">
+    나는 왜 이런 삶을 살고 있는가 · 타고난 성향과 재능은 무엇인가<br>
+    반복되는 패턴의 의미 · 인생이 확장되는 선택의 방향 · 앞으로 3~5년의 흐름
+    </span>
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown('<p class="price-tag">₩ 500,000</p>', unsafe_allow_html=True)
+    st.markdown("""
+    <div style="text-align: center; margin: 25px 0;">
+        <p style="font-family: 'Noto Serif KR', serif; font-size: 1rem; color: #999;
+                  text-decoration: line-through; margin-bottom: 2px;">₩ 199,000</p>
+        <p style="font-family: 'Noto Serif KR', serif; font-size: 2rem; color: #1a1a2e;
+                  margin: 0; font-weight: 700;">₩ 119,000</p>
+        <p style="font-size: 0.85rem; color: #c9a96e; letter-spacing: 1px; margin-top: 4px;">
+            한정 33권 · BETA EDITION</p>
+    </div>
+    """, unsafe_allow_html=True)
 
     st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
 
@@ -472,6 +487,7 @@ def page_customer():
     st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
     st.markdown("""
     <div style="text-align: center; color: #999; font-size: 0.85rem;">
+    이수진 | 20년 이상의 동서양 운명학 연구 · AI 통합 분석 시스템 설계<br>
     Produced by SULFUN | © 2026 All rights reserved<br>
     문의: help@sulfun.com
     </div>
