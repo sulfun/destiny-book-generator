@@ -4,5 +4,4 @@ anthropic>=0.80.0
 reportlab>=4.0
 pypdf>=4.0
 pyswisseph>=2.10
-gspread>=6.0.0
-google-auth>=2.0.0
+notion-client>=2.0.0

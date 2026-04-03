@@ -25,11 +25,10 @@ from interpreter import generate_all_chapters, generate_all_chapters_offline
 from pdf_generator import generate_pdf
 
 try:
-    import gspread
-    from google.oauth2.service_account import Credentials
-    GSHEETS_AVAILABLE = True
+    from notion_client import Client as NotionClient
+    NOTION_AVAILABLE = True
 except ImportError:
-    GSHEETS_AVAILABLE = False
+    NOTION_AVAILABLE = False
 
 # === 앱 설정 ===
 st.set_page_config(
@@ -43,62 +42,21 @@ st.set_page_config(
 OUTPUT_DIR = Path("data/output")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# === Google Sheets 연결 ===
-SHEET_COLUMNS = [
-    "order_id", "status", "created_at", "updated_at",
-    "name_kr", "name_en", "email", "phone", "gender",
-    "year", "month", "day", "hour", "minute",
-    "city", "notes", "chart_data"
-]
+# === Notion 연결 ===
+NOTION_DB_ID = "231274d036864a249614327bb9fdeed9"
 
 @st.cache_resource(ttl=300)
-def get_gsheet_client():
-    """Google Sheets 클라이언트 생성"""
-    if not GSHEETS_AVAILABLE:
+def get_notion_client():
+    """Notion 클라이언트 생성"""
+    if not NOTION_AVAILABLE:
         return None
     try:
-        creds_dict = dict(st.secrets["gcp_service_account"])
-        scopes = [
-            "https://www.googleapis.com/auth/spreadsheets",
-            "https://www.googleapis.com/auth/drive",
-        ]
-        creds = Credentials.from_service_account_info(creds_dict, scopes=scopes)
-        client = gspread.authorize(creds)
-        return client
+        token = st.secrets.get("notion_token", "")
+        if not token:
+            return None
+        return NotionClient(auth=token)
     except Exception as e:
-        st.sidebar.warning(f"Google Sheets 연결 실패: {e}")
-        return None
-
-def get_worksheet():
-    """주문 워크시트 가져오기 (없으면 생성)"""
-    client = get_gsheet_client()
-    if client is None:
-        return None
-    try:
-        sheet_url = st.secrets.get("sheet_url", "")
-        if sheet_url:
-            spreadsheet = client.open_by_url(sheet_url)
-        else:
-            sheet_name = st.secrets.get("sheet_name", "운명책_주문관리")
-            try:
-                spreadsheet = client.open(sheet_name)
-            except gspread.SpreadsheetNotFound:
-                spreadsheet = client.create(sheet_name)
-                spreadsheet.share(st.secrets.get("admin_email", "help@sulfun.com"),
-                                  perm_type='user', role='writer')
-
-        # 워크시트 가져오기/생성
-        try:
-            worksheet = spreadsheet.worksheet("주문목록")
-        except gspread.WorksheetNotFound:
-            worksheet = spreadsheet.add_worksheet(title="주문목록", rows=1000, cols=len(SHEET_COLUMNS))
-            worksheet.update('A1', [SHEET_COLUMNS])
-            # 헤더 서식
-            worksheet.format('A1:Q1', {'textFormat': {'bold': True}})
-
-        return worksheet
-    except Exception as e:
-        st.sidebar.warning(f"시트 접근 실패: {e}")
+        st.sidebar.warning(f"Notion 연결 실패: {e}")
         return None
 
 # === 스타일 ===
@@ -175,65 +133,175 @@ CITY_OPTIONS = {
 }
 
 
+def _notion_status_map(status):
+    """내부 상태 → Notion 상태 매핑"""
+    mapping = {
+        "pending": "접수완료",
+        "processing": "차트계산중",
+        "interpreting": "해석생성중",
+        "pdf_generating": "PDF생성중",
+        "complete": "완료",
+        "delivered": "완료",
+        "error": "오류",
+    }
+    return mapping.get(status, "접수완료")
+
+
+def _notion_status_reverse(notion_status):
+    """Notion 상태 → 내부 상태 매핑"""
+    mapping = {
+        "접수완료": "pending",
+        "차트계산중": "processing",
+        "해석생성중": "processing",
+        "PDF생성중": "processing",
+        "완료": "complete",
+        "오류": "error",
+    }
+    return mapping.get(notion_status, "pending")
+
+
 def save_order(order_data):
-    """주문 저장 → Google Sheets"""
+    """주문 저장 → Notion"""
     order_id = datetime.now().strftime("%Y%m%d_%H%M%S")
     order_data["order_id"] = order_id
-    order_data["status"] = "pending"
-    order_data["created_at"] = datetime.now().isoformat()
-    order_data["updated_at"] = ""
-    order_data["chart_data"] = ""
 
-    ws = get_worksheet()
-    if ws:
-        row = [str(order_data.get(col, "")) for col in SHEET_COLUMNS]
-        ws.append_row(row, value_input_option='USER_ENTERED')
+    notion = get_notion_client()
+    if notion:
+        try:
+            gender_kr = "여성" if order_data.get("gender") in ["여", "여성"] else "남성"
+            properties = {
+                "주문번호": {"title": [{"text": {"content": order_id}}]},
+                "상태": {"select": {"name": "접수완료"}},
+                "이름(한글)": {"rich_text": [{"text": {"content": order_data.get("name_kr", "")}}]},
+                "이름(영문)": {"rich_text": [{"text": {"content": order_data.get("name_en", "")}}]},
+                "이메일": {"email": order_data.get("email", "") or None},
+                "전화번호": {"phone_number": order_data.get("phone", "") or None},
+                "성별": {"select": {"name": gender_kr}},
+                "생년": {"number": int(order_data.get("year", 0))},
+                "생월": {"number": int(order_data.get("month", 0))},
+                "생일": {"number": int(order_data.get("day", 0))},
+                "생시": {"number": int(order_data.get("hour", 0))},
+                "생분": {"number": int(order_data.get("minute", 0))},
+                "출생도시": {"rich_text": [{"text": {"content": order_data.get("city", "")}}]},
+                "메모": {"rich_text": [{"text": {"content": order_data.get("notes", "")}}]},
+            }
+            notion.pages.create(
+                parent={"database_id": NOTION_DB_ID},
+                properties=properties
+            )
+        except Exception as e:
+            st.warning(f"Notion 저장 실패: {e}")
     return order_id
 
 
 def load_orders():
-    """모든 주문 불러오기 ← Google Sheets"""
-    ws = get_worksheet()
-    if ws is None:
+    """모든 주문 불러오기 ← Notion"""
+    notion = get_notion_client()
+    if notion is None:
         return []
     try:
-        records = ws.get_all_records()
-        # 최신순 정렬
-        records.sort(key=lambda x: x.get("created_at", ""), reverse=True)
-        return records
+        results = notion.databases.query(
+            database_id=NOTION_DB_ID,
+            sorts=[{"property": "접수일시", "direction": "descending"}]
+        )
+        orders = []
+        for page in results.get("results", []):
+            props = page["properties"]
+            order = {
+                "page_id": page["id"],
+                "order_id": _get_title(props.get("주문번호", {})),
+                "status": _notion_status_reverse(
+                    _get_select(props.get("상태", {}))
+                ),
+                "status_kr": _get_select(props.get("상태", {})),
+                "name_kr": _get_rich_text(props.get("이름(한글)", {})),
+                "name_en": _get_rich_text(props.get("이름(영문)", {})),
+                "email": props.get("이메일", {}).get("email", ""),
+                "phone": props.get("전화번호", {}).get("phone_number", ""),
+                "gender": _get_select(props.get("성별", {})),
+                "year": int(props.get("생년", {}).get("number", 0) or 0),
+                "month": int(props.get("생월", {}).get("number", 0) or 0),
+                "day": int(props.get("생일", {}).get("number", 0) or 0),
+                "hour": int(props.get("생시", {}).get("number", 0) or 0),
+                "minute": int(props.get("생분", {}).get("number", 0) or 0),
+                "city": _get_rich_text(props.get("출생도시", {})),
+                "notes": _get_rich_text(props.get("메모", {})),
+                "created_at": page.get("created_time", ""),
+            }
+            orders.append(order)
+        return orders
     except Exception as e:
         st.warning(f"주문 로드 실패: {e}")
         return []
 
 
+def _get_title(prop):
+    """Notion title 속성에서 텍스트 추출"""
+    try:
+        return prop["title"][0]["plain_text"]
+    except (KeyError, IndexError):
+        return ""
+
+def _get_rich_text(prop):
+    """Notion rich_text 속성에서 텍스트 추출"""
+    try:
+        return prop["rich_text"][0]["plain_text"]
+    except (KeyError, IndexError):
+        return ""
+
+def _get_select(prop):
+    """Notion select 속성에서 값 추출"""
+    try:
+        return prop["select"]["name"]
+    except (KeyError, TypeError):
+        return ""
+
+
 def update_order_status(order_id, new_status):
-    """주문 상태 업데이트 → Google Sheets"""
-    ws = get_worksheet()
-    if ws is None:
+    """주문 상태 업데이트 → Notion"""
+    notion = get_notion_client()
+    if notion is None:
         return
     try:
-        cell = ws.find(str(order_id))
-        if cell:
-            row = cell.row
-            # status 컬럼 (B), updated_at 컬럼 (D)
-            status_col = SHEET_COLUMNS.index("status") + 1
-            updated_col = SHEET_COLUMNS.index("updated_at") + 1
-            ws.update_cell(row, status_col, new_status)
-            ws.update_cell(row, updated_col, datetime.now().isoformat())
+        # order_id로 페이지 찾기
+        results = notion.databases.query(
+            database_id=NOTION_DB_ID,
+            filter={"property": "주문번호", "title": {"equals": str(order_id)}}
+        )
+        pages = results.get("results", [])
+        if pages:
+            page_id = pages[0]["id"]
+            notion.pages.update(
+                page_id=page_id,
+                properties={
+                    "상태": {"select": {"name": _notion_status_map(new_status)}}
+                }
+            )
     except Exception as e:
         st.warning(f"상태 업데이트 실패: {e}")
 
 
 def save_chart_data(order_id, chart_data_json):
-    """차트 데이터를 시트에 저장"""
-    ws = get_worksheet()
-    if ws is None:
+    """차트 데이터를 Notion에 저장"""
+    notion = get_notion_client()
+    if notion is None:
         return
     try:
-        cell = ws.find(str(order_id))
-        if cell:
-            chart_col = SHEET_COLUMNS.index("chart_data") + 1
-            ws.update_cell(cell.row, chart_col, chart_data_json)
+        results = notion.databases.query(
+            database_id=NOTION_DB_ID,
+            filter={"property": "주문번호", "title": {"equals": str(order_id)}}
+        )
+        pages = results.get("results", [])
+        if pages:
+            page_id = pages[0]["id"]
+            # Notion rich_text 최대 2000자이므로 필요시 잘라서 저장
+            truncated = chart_data_json[:2000] if len(chart_data_json) > 2000 else chart_data_json
+            notion.pages.update(
+                page_id=page_id,
+                properties={
+                    "차트데이터": {"rich_text": [{"text": {"content": truncated}}]}
+                }
+            )
     except Exception as e:
         st.warning(f"차트 데이터 저장 실패: {e}")
 
