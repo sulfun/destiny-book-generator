@@ -422,25 +422,42 @@ def page_customer():
         <div style="background: #faf8f4; border-left: 3px solid #c9a96e;
                     padding: 18px 22px; margin-bottom: 18px; border-radius: 0 6px 6px 0;">
             <p style="color: #333; font-size: 0.93rem; line-height: 1.8; margin: 0;">
-            "내가 왜 이렇게 살아왔는지 처음으로 납득이 됐어요.<br>
-             지금까지 받아 본 어떤 상담보다 깊었습니다."</p>
-            <p style="color: #999; font-size: 0.8rem; margin: 8px 0 0 0;">— 1차 베타 리더, 30대 여성</p>
+            "운명책은 감동적이었습니다. 점을 볼 때처럼 잘 맞거나 명료한 감상을 예상했는데,
+             그와는 전혀 다른 벅찬 감동과 울림이 있었습니다."</p>
+            <p style="color: #999; font-size: 0.8rem; margin: 8px 0 0 0;">— 베타 리더 S</p>
         </div>
 
         <div style="background: #faf8f4; border-left: 3px solid #c9a96e;
                     padding: 18px 22px; margin-bottom: 18px; border-radius: 0 6px 6px 0;">
             <p style="color: #333; font-size: 0.93rem; line-height: 1.8; margin: 0;">
-            "사주도 보고 타로도 봤는데, 이건 차원이 달라요.<br>
-             제 인생 패턴이 왜 반복되는지 구조적으로 보여주니까 소름이었어요."</p>
-            <p style="color: #999; font-size: 0.8rem; margin: 8px 0 0 0;">— 1차 베타 리더, 40대 남성</p>
+            "모든 챕터가 설명은 다르지만 한 가지 이야기를 하고 있었고,
+             저라는 사람에 대해 다시금 돌아보고 앞날을 결심하는 계기가 되었습니다."</p>
+            <p style="color: #999; font-size: 0.8rem; margin: 8px 0 0 0;">— 베타 리더 S</p>
         </div>
 
         <div style="background: #faf8f4; border-left: 3px solid #c9a96e;
                     padding: 18px 22px; margin-bottom: 18px; border-radius: 0 6px 6px 0;">
             <p style="color: #333; font-size: 0.93rem; line-height: 1.8; margin: 0;">
-            "읽고 나서 며칠 동안 계속 생각났어요.<br>
-             저한테만 해당되는 이야기라서 자꾸 다시 펼치게 됩니다."</p>
-            <p style="color: #999; font-size: 0.8rem; margin: 8px 0 0 0;">— 2차 베타 리더, 30대 여성</p>
+            "부제들은 마치 말을 건네는 듯 감동적이었고 아름다웠습니다.<br>
+             때론 울컥하기도 했고, 위로를 받기도 했습니다."</p>
+            <p style="color: #999; font-size: 0.8rem; margin: 8px 0 0 0;">— 베타 리더 S</p>
+        </div>
+
+        <div style="background: #faf8f4; border-left: 3px solid #c9a96e;
+                    padding: 18px 22px; margin-bottom: 18px; border-radius: 0 6px 6px 0;">
+            <p style="color: #333; font-size: 0.93rem; line-height: 1.8; margin: 0;">
+            "책에서는 제 안의 모순을 모두 담으면서도 그것의 통합을 말하더라고요.
+             그 지점에서 의문이 풀리는 기분이었습니다."</p>
+            <p style="color: #999; font-size: 0.8rem; margin: 8px 0 0 0;">— 베타 리더 S</p>
+        </div>
+
+        <div style="background: #faf8f4; border-left: 3px solid #c9a96e;
+                    padding: 18px 22px; margin-bottom: 18px; border-radius: 0 6px 6px 0;">
+            <p style="color: #333; font-size: 0.93rem; line-height: 1.8; margin: 0;">
+            "저의 성향을 설명한 내용들이 너무나 잘 들어맞았습니다.
+             저 스스로 생각하는 저의 모습과, 살면서 수많은 사람들과
+             술사들에게 들었던 말들이 모두 담겨있었습니다."</p>
+            <p style="color: #999; font-size: 0.8rem; margin: 8px 0 0 0;">— 베타 리더 S</p>
         </div>
     </div>
     """, unsafe_allow_html=True)
