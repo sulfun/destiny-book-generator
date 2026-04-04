@@ -413,54 +413,37 @@ def page_customer():
     st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
 
     # === BETA TESTER FEEDBACK ===
-    st.markdown("""
-    <div style="max-width: 640px; margin: 0 auto; padding: 20px 0;">
-        <p style="font-family: 'Noto Serif KR', serif; text-align: center;
-                  font-size: 1.05rem; color: #1a1a2e; margin-bottom: 25px;">
-                  베타 리더들의 이야기</p>
+    st.markdown("### 베타 리더들의 이야기")
 
-        <div style="background: #faf8f4; border-left: 3px solid #c9a96e;
-                    padding: 18px 22px; margin-bottom: 18px; border-radius: 0 6px 6px 0;">
-            <p style="color: #333; font-size: 0.93rem; line-height: 1.8; margin: 0;">
-            "운명책은 감동적이었습니다. 점을 볼 때처럼 잘 맞거나 명료한 감상을 예상했는데,
-             그와는 전혀 다른 벅찬 감동과 울림이 있었습니다."</p>
-            <p style="color: #999; font-size: 0.8rem; margin: 8px 0 0 0;">— 베타 리더 S</p>
-        </div>
+    FEEDBACKS = [
+        {
+            "quote": "운명책은 감동적이었습니다. 점을 볼 때처럼 잘 맞거나 명료한 감상을 예상했는데, 그와는 전혀 다른 벅찬 감동과 울림이 있었습니다.",
+            "who": "199x년 서울 장*진",
+        },
+        {
+            "quote": "모든 챕터가 설명은 다르지만 한 가지 이야기를 하고 있었고, 저라는 사람에 대해 다시금 돌아보고 앞날을 결심하는 계기가 되었습니다.",
+            "who": "199x년 서울 장*진",
+        },
+        {
+            "quote": "부제들은 마치 말을 건네는 듯 감동적이었고 아름다웠습니다. 때론 울컥하기도 했고, 위로를 받기도 했습니다.",
+            "who": "199x년 서울 장*진",
+        },
+        {
+            "quote": "책에서는 제 안의 모순을 모두 담으면서도 그것의 통합을 말하더라고요. 그 지점에서 의문이 풀리는 기분이었습니다.",
+            "who": "199x년 서울 장*진",
+        },
+        {
+            "quote": "저의 성향을 설명한 내용들이 너무나 잘 들어맞았습니다. 저 스스로 생각하는 저의 모습과, 살면서 수많은 사람들과 술사들에게 들었던 말들이 모두 담겨있었습니다.",
+            "who": "199x년 서울 장*진",
+        },
+    ]
 
-        <div style="background: #faf8f4; border-left: 3px solid #c9a96e;
-                    padding: 18px 22px; margin-bottom: 18px; border-radius: 0 6px 6px 0;">
-            <p style="color: #333; font-size: 0.93rem; line-height: 1.8; margin: 0;">
-            "모든 챕터가 설명은 다르지만 한 가지 이야기를 하고 있었고,
-             저라는 사람에 대해 다시금 돌아보고 앞날을 결심하는 계기가 되었습니다."</p>
-            <p style="color: #999; font-size: 0.8rem; margin: 8px 0 0 0;">— 베타 리더 S</p>
-        </div>
-
-        <div style="background: #faf8f4; border-left: 3px solid #c9a96e;
-                    padding: 18px 22px; margin-bottom: 18px; border-radius: 0 6px 6px 0;">
-            <p style="color: #333; font-size: 0.93rem; line-height: 1.8; margin: 0;">
-            "부제들은 마치 말을 건네는 듯 감동적이었고 아름다웠습니다.<br>
-             때론 울컥하기도 했고, 위로를 받기도 했습니다."</p>
-            <p style="color: #999; font-size: 0.8rem; margin: 8px 0 0 0;">— 베타 리더 S</p>
-        </div>
-
-        <div style="background: #faf8f4; border-left: 3px solid #c9a96e;
-                    padding: 18px 22px; margin-bottom: 18px; border-radius: 0 6px 6px 0;">
-            <p style="color: #333; font-size: 0.93rem; line-height: 1.8; margin: 0;">
-            "책에서는 제 안의 모순을 모두 담으면서도 그것의 통합을 말하더라고요.
-             그 지점에서 의문이 풀리는 기분이었습니다."</p>
-            <p style="color: #999; font-size: 0.8rem; margin: 8px 0 0 0;">— 베타 리더 S</p>
-        </div>
-
-        <div style="background: #faf8f4; border-left: 3px solid #c9a96e;
-                    padding: 18px 22px; margin-bottom: 18px; border-radius: 0 6px 6px 0;">
-            <p style="color: #333; font-size: 0.93rem; line-height: 1.8; margin: 0;">
-            "저의 성향을 설명한 내용들이 너무나 잘 들어맞았습니다.
-             저 스스로 생각하는 저의 모습과, 살면서 수많은 사람들과
-             술사들에게 들었던 말들이 모두 담겨있었습니다."</p>
-            <p style="color: #999; font-size: 0.8rem; margin: 8px 0 0 0;">— 베타 리더 S</p>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    for fb in FEEDBACKS:
+        st.markdown(f"""
+> *"{fb['quote']}"*
+>
+> — {fb['who']}
+""")
 
     st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
 
@@ -597,8 +580,12 @@ def page_customer():
                                        help="예: Asia/Seoul, America/New_York, Europe/London")
 
         st.markdown("---")
-        notes = st.text_area("추가 메모 (선택)", placeholder="특별히 궁금한 점이나 참고사항이 있으면 적어주세요",
-                            max_chars=500)
+        notes = st.text_area(
+            "추가 메모 (선택)",
+            placeholder="일, 직업, 소명, 원가족, 파트너 문제 등 현재의 고민을 상세히 기술해 주십시오.",
+            help="정보가 상세할수록 해석의 깊이가 달라집니다. 과거-현재의 직업/경력/이력은 미래의 향방을 예측하고 조언을 출력하는 데 큰 정보가 됩니다.",
+            max_chars=2000
+        )
 
         submitted = st.form_submit_button("✨ 운명책 신청하기", use_container_width=True)
 
