@@ -364,28 +364,169 @@ def page_customer():
     st.markdown('<p class="sub-title">THE BOOK OF DESTINY</p>', unsafe_allow_html=True)
     st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
 
+    # === HERO SECTION ===
     st.markdown("""
-    <div class="info-box">
-    <strong>세상에 단 하나뿐인, 나로 살기 위한 책</strong><br><br>
-    이 책은 금전운, 연애운, 직업운을 점치는 운세책이 아닙니다.<br>
-    20년 이상 연구해 온 동서양 12종 운명학 시스템과 AI 분석을 결합하여<br>
-    <em>"한 인간의 구조와 가능성을 해석하는 운명 설계 보고서"</em>를 제작합니다.<br><br>
-    사주명리 · 서양점성학 · 베딕점성학 · 수비학 · 휴먼디자인 · 자미두수 · 타로 · 카발라 외<br><br>
-    <span style="color: #666; font-size: 0.9rem;">
-    나는 왜 이런 삶을 살고 있는가 · 타고난 성향과 재능은 무엇인가<br>
-    반복되는 패턴의 의미 · 인생이 확장되는 선택의 방향 · 앞으로 3~5년의 흐름
-    </span>
+    <div style="text-align: center; margin: 10px 0 30px 0;">
+        <p style="font-family: 'Noto Serif KR', serif; font-size: 1.15rem; color: #555;
+                  line-height: 1.9; max-width: 600px; margin: 0 auto;">
+        세상에 단 하나뿐인,<br>
+        <strong style="color: #1a1a2e;">나로 살기 위한 책</strong>
+        </p>
     </div>
     """, unsafe_allow_html=True)
 
+    st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
+
+    # === WHAT IT IS ===
+    st.markdown("""
+    <div style="max-width: 640px; margin: 0 auto; line-height: 2; color: #333; font-size: 0.95rem;">
+
+    <p>이 책은 <strong>"언제 돈이 들어온다, 언제 결혼한다"</strong> 같은 운세책이 아닙니다.</p>
+
+    <p>동서양 12종 운명학 시스템과 AI 분석을 결합하여<br>
+    <em style="color: #1a1a2e; font-weight: 600;">"한 인간의 구조와 가능성을 해석하는 운명 설계 보고서"</em>를 제작합니다.</p>
+
+    <p style="color: #888; font-size: 0.88rem; letter-spacing: 0.5px;">
+    사주명리 · 서양점성학 · 베딕점성학 · 수비학 · 휴먼디자인 · 자미두수 · 타로 · 카발라 외</p>
+
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
+
+    # === QUESTIONS THIS BOOK ANSWERS ===
+    st.markdown("""
+    <div style="max-width: 640px; margin: 0 auto; padding: 20px 0;">
+        <p style="font-family: 'Noto Serif KR', serif; text-align: center;
+                  font-size: 1.05rem; color: #1a1a2e; margin-bottom: 20px;">
+                  이 책이 다루는 질문들</p>
+        <div style="line-height: 2.2; color: #444; font-size: 0.93rem;">
+            <p style="margin: 8px 0;">나는 왜 이런 삶을 살고 있는가</p>
+            <p style="margin: 8px 0;">나의 타고난 성향과 재능은 무엇인가</p>
+            <p style="margin: 8px 0;">나에게 반복되는 패턴은 무엇인가</p>
+            <p style="margin: 8px 0;">어떤 선택을 할 때 인생이 크게 확장되는가</p>
+            <p style="margin: 8px 0;">앞으로의 3~5년은 어떤 흐름으로 전개되는가</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
+
+    # === BETA TESTER FEEDBACK ===
+    st.markdown("""
+    <div style="max-width: 640px; margin: 0 auto; padding: 20px 0;">
+        <p style="font-family: 'Noto Serif KR', serif; text-align: center;
+                  font-size: 1.05rem; color: #1a1a2e; margin-bottom: 25px;">
+                  베타 리더들의 이야기</p>
+
+        <div style="background: #faf8f4; border-left: 3px solid #c9a96e;
+                    padding: 18px 22px; margin-bottom: 18px; border-radius: 0 6px 6px 0;">
+            <p style="color: #333; font-size: 0.93rem; line-height: 1.8; margin: 0;">
+            "내가 왜 이렇게 살아왔는지 처음으로 납득이 됐어요.<br>
+             지금까지 받아 본 어떤 상담보다 깊었습니다."</p>
+            <p style="color: #999; font-size: 0.8rem; margin: 8px 0 0 0;">— 1차 베타 리더, 30대 여성</p>
+        </div>
+
+        <div style="background: #faf8f4; border-left: 3px solid #c9a96e;
+                    padding: 18px 22px; margin-bottom: 18px; border-radius: 0 6px 6px 0;">
+            <p style="color: #333; font-size: 0.93rem; line-height: 1.8; margin: 0;">
+            "사주도 보고 타로도 봤는데, 이건 차원이 달라요.<br>
+             제 인생 패턴이 왜 반복되는지 구조적으로 보여주니까 소름이었어요."</p>
+            <p style="color: #999; font-size: 0.8rem; margin: 8px 0 0 0;">— 1차 베타 리더, 40대 남성</p>
+        </div>
+
+        <div style="background: #faf8f4; border-left: 3px solid #c9a96e;
+                    padding: 18px 22px; margin-bottom: 18px; border-radius: 0 6px 6px 0;">
+            <p style="color: #333; font-size: 0.93rem; line-height: 1.8; margin: 0;">
+            "읽고 나서 며칠 동안 계속 생각났어요.<br>
+             저한테만 해당되는 이야기라서 자꾸 다시 펼치게 됩니다."</p>
+            <p style="color: #999; font-size: 0.8rem; margin: 8px 0 0 0;">— 2차 베타 리더, 30대 여성</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
+
+    # === WHAT MAKES IT DIFFERENT ===
+    st.markdown("""
+    <div style="max-width: 640px; margin: 0 auto; padding: 20px 0;
+                line-height: 2; color: #333; font-size: 0.93rem;">
+
+    <p style="font-family: 'Noto Serif KR', serif; text-align: center;
+              font-size: 1.05rem; color: #1a1a2e; margin-bottom: 20px;">
+              기존 서비스와 무엇이 다른가</p>
+
+    <p>대부분의 운세 앱은 DB에 입력된 경우의 수 조합으로 결과를 출력합니다.
+    같은 생년월일이면 같은 답이 나옵니다.</p>
+
+    <p>이 책은 다릅니다. 12종의 운명학 체계를 교차 분석하고,
+    20년 이상의 실전 해석 경험을 학습한 AI가
+    <strong>단 한 사람만을 위한 해석</strong>을 생성합니다.</p>
+
+    <p>인간이 태어나기 전 설계한 사명은 물질세계에서 단 하나의 직업으로만
+    성취되는 것이 아닙니다. 힐러로 태어난 사람은 의사, 상담가, 교육자,
+    무엇이든 될 수 있습니다. 이 책은 표면적 직업이 아니라
+    <em>당신이라는 존재의 구조와 방향성</em>을 읽어냅니다.</p>
+
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
+
+    # === PROCESS ===
+    st.markdown("""
+    <div style="max-width: 640px; margin: 0 auto; padding: 20px 0;">
+        <p style="font-family: 'Noto Serif KR', serif; text-align: center;
+                  font-size: 1.05rem; color: #1a1a2e; margin-bottom: 20px;">
+                  진행 방식</p>
+        <div style="display: flex; justify-content: center; gap: 30px; text-align: center;
+                    color: #555; font-size: 0.88rem; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 140px;">
+                <p style="font-size: 1.5rem; margin-bottom: 5px;">01</p>
+                <p style="color: #c9a96e; font-weight: 600;">신청서 작성</p>
+                <p>출생 정보 입력 및 제출</p>
+            </div>
+            <div style="flex: 1; min-width: 140px;">
+                <p style="font-size: 1.5rem; margin-bottom: 5px;">02</p>
+                <p style="color: #c9a96e; font-weight: 600;">제작 (1~3일)</p>
+                <p>12종 차트 분석 + AI 해석 생성</p>
+            </div>
+            <div style="flex: 1; min-width: 140px;">
+                <p style="font-size: 1.5rem; margin-bottom: 5px;">03</p>
+                <p style="color: #c9a96e; font-weight: 600;">운명책 수령</p>
+                <p>PDF 이메일 발송</p>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
+
+    # === PRICING ===
     st.markdown("""
     <div style="text-align: center; margin: 25px 0;">
         <p style="font-family: 'Noto Serif KR', serif; font-size: 1rem; color: #999;
                   text-decoration: line-through; margin-bottom: 2px;">₩ 199,000</p>
-        <p style="font-family: 'Noto Serif KR', serif; font-size: 2rem; color: #1a1a2e;
+        <p style="font-family: 'Noto Serif KR', serif; font-size: 2.2rem; color: #1a1a2e;
                   margin: 0; font-weight: 700;">₩ 119,000</p>
         <p style="font-size: 0.85rem; color: #c9a96e; letter-spacing: 1px; margin-top: 4px;">
             한정 33권 · BETA EDITION</p>
+        <p style="font-size: 0.78rem; color: #aaa; margin-top: 8px;">
+            정가 출시 후에는 이 가격으로 구매할 수 없습니다</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
+
+    # === NOTES ===
+    st.markdown("""
+    <div style="max-width: 640px; margin: 0 auto; padding: 15px 0;
+                color: #888; font-size: 0.82rem; line-height: 1.9;">
+    <p><strong style="color: #666;">참고사항</strong></p>
+    <p>· 태어난 시간과 장소를 정확히 아는 것이 매우 중요합니다</p>
+    <p>· 영문 이름은 수비학 분석에 사용됩니다 (선택사항)</p>
+    <p>· 제작은 신청 + 입금 순으로 진행됩니다</p>
+    <p>· 현재 수작업 검증을 병행하고 있어 제작 기간이 다소 소요될 수 있습니다</p>
     </div>
     """, unsafe_allow_html=True)
 
