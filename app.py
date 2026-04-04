@@ -595,11 +595,31 @@ def page_customer():
             max_chars=2000
         )
 
+        st.markdown("---")
+
+        privacy_agreed = st.checkbox("개인정보 수집 및 이용에 동의합니다.")
+
+        st.markdown("""
+<details style="font-size: 0.82rem; color: #888; margin-top: -8px; margin-bottom: 12px;">
+<summary style="cursor: pointer; color: #c9a96e;">개인정보 수집·이용 동의 안내 (자세히 보기)</summary>
+
+**수집 항목**: 이름, 이메일, 전화번호, 성별, 생년월일 및 출생시간, 출생지
+**수집 목적**: 운명책 제작 및 배송, 주문 확인 연락, 고객 문의 응대
+**보유 기간**: 주문 완료 후 **1년** 또는 동의 철회 시까지
+**동의 거부 시**: 운명책 신청이 불가합니다.
+
+수집된 개인정보는 상기 목적 외에 사용되지 않으며, 제3자에게 제공되지 않습니다.
+동의 철회를 원하시면 **help@sulfun.com**으로 연락해 주세요.
+</details>
+""", unsafe_allow_html=True)
+
         submitted = st.form_submit_button("✨ 운명책 신청하기", use_container_width=True)
 
         if submitted:
             # 유효성 검사
-            if not name_kr:
+            if not privacy_agreed:
+                st.error("개인정보 수집 및 이용에 동의해 주세요.")
+            elif not name_kr:
                 st.error("이름을 입력해주세요.")
             elif not email:
                 st.error("이메일을 입력해주세요.")
