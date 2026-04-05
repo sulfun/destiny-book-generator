@@ -719,7 +719,7 @@ def page_customer():
     st.markdown("""
     <div style="text-align: center; color: #999; font-size: 0.85rem;">
     이수진 | 20년 이상의 동서양 운명학 연구 · AI 통합 분석 시스템 설계<br>
-    Produced by SULFUN | © 2026 All rights reserved<br>
+    Produced by The Architect | © 2026 All rights reserved<br>
     문의: societyalef@gmail.com
     </div>
     """, unsafe_allow_html=True)
@@ -974,7 +974,7 @@ def main():
         st.markdown("---")
         st.markdown("""
         <div style="color: #888; font-size: 0.8rem;">
-        Produced by SULFUN<br>
+        Produced by The Architect<br>
         운명학 종합 분석 시스템<br>
         v1.0
         </div>
