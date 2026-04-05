@@ -486,24 +486,34 @@ def page_customer():
 
     # === PROCESS ===
     st.markdown("""
-    <div style="max-width: 640px; margin: 0 auto; padding: 20px 0;">
+    <div style="max-width: 720px; margin: 0 auto; padding: 20px 0;">
         <p style="font-family: 'Noto Serif KR', serif; text-align: center;
                   font-size: 1.05rem; color: #1a1a2e; margin-bottom: 20px;">
                   진행 방식</p>
-        <div style="display: flex; justify-content: center; gap: 30px; text-align: center;
-                    color: #555; font-size: 0.88rem; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 140px;">
+        <div style="display: flex; justify-content: center; gap: 18px; text-align: center;
+                    color: #555; font-size: 0.85rem; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 120px;">
                 <p style="font-size: 1.5rem; margin-bottom: 5px;">01</p>
                 <p style="color: #c9a96e; font-weight: 600;">신청서 작성</p>
                 <p>출생 정보 입력 및 제출</p>
             </div>
-            <div style="flex: 1; min-width: 140px;">
+            <div style="flex: 1; min-width: 120px;">
                 <p style="font-size: 1.5rem; margin-bottom: 5px;">02</p>
+                <p style="color: #c9a96e; font-weight: 600;">선별 및 입금 확인</p>
+                <p>오류·거짓·불필요 데이터 선별</p>
+            </div>
+            <div style="flex: 1; min-width: 120px;">
+                <p style="font-size: 1.5rem; margin-bottom: 5px;">03</p>
                 <p style="color: #c9a96e; font-weight: 600;">제작 (1~3일)</p>
                 <p>12종 차트 분석 + AI 해석 생성</p>
             </div>
-            <div style="flex: 1; min-width: 140px;">
-                <p style="font-size: 1.5rem; margin-bottom: 5px;">03</p>
+            <div style="flex: 1; min-width: 120px;">
+                <p style="font-size: 1.5rem; margin-bottom: 5px;">04</p>
+                <p style="color: #c9a96e; font-weight: 600;">오류 확인</p>
+                <p>데이터 및 메시지 검증</p>
+            </div>
+            <div style="flex: 1; min-width: 120px;">
+                <p style="font-size: 1.5rem; margin-bottom: 5px;">05</p>
                 <p style="color: #c9a96e; font-weight: 600;">운명책 수령</p>
                 <p>PDF 이메일 발송</p>
             </div>
@@ -533,10 +543,11 @@ def page_customer():
     st.markdown("""
     <div style="max-width: 640px; margin: 0 auto; padding: 15px 0;
                 color: #888; font-size: 0.82rem; line-height: 1.9;">
-    <p><strong style="color: #666;">참고사항</strong></p>
+    <p><strong style="color: #666;">주의사항</strong></p>
+    <p>· 운명책을 받을 가치가 있는 분들께만 입금 링크가 회신됩니다</p>
     <p>· 태어난 시간과 장소를 정확히 아는 것이 매우 중요합니다</p>
     <p>· 영문 이름은 수비학 분석에 사용됩니다 (선택사항)</p>
-    <p>· 제작은 신청 + 입금 순으로 진행됩니다</p>
+    <p>· 제작은 선별 + 입금 확인 순으로 진행됩니다</p>
     <p>· 현재 수작업 검증을 병행하고 있어 제작 기간이 다소 소요될 수 있습니다</p>
     </div>
     """, unsafe_allow_html=True)
