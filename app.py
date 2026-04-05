@@ -531,7 +531,7 @@ def page_customer():
         <p style="font-family: 'Noto Serif KR', serif; font-size: 2.2rem; color: #1a1a2e;
                   margin: 0; font-weight: 700;">₩ 119,000</p>
         <p style="font-size: 0.85rem; color: #c9a96e; letter-spacing: 1px; margin-top: 4px;">
-            한정 33권 · BETA EDITION</p>
+            한정 22권 · BETA EDITION</p>
         <p style="font-size: 0.78rem; color: #aaa; margin-top: 8px;">
             정가 출시 후에는 이 가격으로 구매할 수 없습니다</p>
     </div>
@@ -976,7 +976,7 @@ def main():
         <div style="color: #888; font-size: 0.8rem;">
         Produced by The Architect<br>
         운명학 종합 분석 시스템<br>
-        v1.0
+        v2.0
         </div>
         """, unsafe_allow_html=True)
 
