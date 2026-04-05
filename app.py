@@ -361,14 +361,16 @@ def collect_charts(data):
 def page_customer():
     """고객 주문 페이지"""
     st.markdown("""
-    <p style="text-align: center; font-size: 0.95rem; color: #888; margin-bottom: -10px; letter-spacing: 1px;">
-    세상에 단 하나뿐인</p>
-    """, unsafe_allow_html=True)
-    st.markdown('<h1 class="main-title">운명책</h1>', unsafe_allow_html=True)
-    st.markdown('<p class="sub-title">THE BOOK OF DESTINY</p>', unsafe_allow_html=True)
-    st.markdown("""
-    <p style="text-align: center; font-size: 0.82rem; color: #c9a96e; margin-top: -5px; letter-spacing: 1.5px;">
-    from the Earth Incarnation System Architect</p>
+    <div style="text-align: center; padding: 10px 0 5px 0;">
+        <p style="font-size: 0.95rem; color: #888; margin: 0 0 2px 0; letter-spacing: 1px;">
+        세상에 단 하나뿐인</p>
+        <h1 style="font-family: 'Noto Serif KR', serif; color: #1a1a2e;
+                   font-size: 2.5rem; margin: 0; line-height: 1.2;">운명책</h1>
+        <p style="color: #c9a96e; font-size: 1.1rem; margin: 4px 0 0 0;
+                  letter-spacing: 3px;">THE BOOK OF DESTINY</p>
+        <p style="font-size: 0.82rem; color: #c9a96e; margin: 6px 0 0 0;
+                  letter-spacing: 1.5px;">from the Earth Incarnation System Architect</p>
+    </div>
     """, unsafe_allow_html=True)
     st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
 
