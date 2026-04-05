@@ -548,7 +548,8 @@ def page_customer():
     <p>· 태어난 시간과 장소를 정확히 아는 것이 매우 중요합니다</p>
     <p>· 영문 이름은 수비학 분석에 사용됩니다 (선택사항)</p>
     <p>· 제작은 선별 + 입금 확인 순으로 진행됩니다</p>
-    <p>· 현재 수작업 검증을 병행하고 있어 제작 기간이 다소 소요될 수 있습니다</p>
+    <p>· 입금 확인 및 최종 PDF 확인까지 최대 1달이 소요될 수 있으며, 메일로 받아보실 때는 운명책 넘버가 제목에 달려 있습니다</p>
+    <p>· 향후 <strong style="color: #c9a96e;">빛과 혼의 커뮤니티</strong>에 가입할 수 있는 자격이 주어집니다</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -602,12 +603,53 @@ def page_customer():
                                        help="예: Asia/Seoul, America/New_York, Europe/London")
 
         st.markdown("---")
-        notes = st.text_area(
-            "추가 메모 (선택)",
-            placeholder="일, 직업, 소명, 원가족, 파트너 문제 등 현재의 고민을 상세히 기술해 주십시오.",
-            help="정보가 상세할수록 해석의 깊이가 달라집니다. 과거-현재의 직업/경력/이력은 미래의 향방을 예측하고 조언을 출력하는 데 큰 정보가 됩니다.",
-            max_chars=2000
+        st.subheader("📝 추가 메모 (선택)")
+        st.markdown("""
+        <p style="font-size: 0.82rem; color: #888; margin-bottom: 10px;">
+        정보가 상세할수록 해석의 깊이가 달라집니다. 과거-현재의 직업/경력/이력은 미래의 향방을 예측하고 조언을 출력하는 데 큰 정보가 됩니다.
+        </p>
+        """, unsafe_allow_html=True)
+
+        memo_1 = st.text_area(
+            "1. 가장 인상적인 연도 및 이벤트, 이유",
+            placeholder="예: 2015년 첫 창업, 인생의 전환점이 되었다...",
+            max_chars=1000, height=80
         )
+        memo_2 = st.text_area(
+            "2. 가장 불행했던 연도 및 이벤트, 이유",
+            placeholder="예: 2019년 이혼, 가장 힘든 시기였다...",
+            max_chars=1000, height=80
+        )
+        memo_3 = st.text_area(
+            "3. 가장 행복했던 연도 및 이벤트, 이유",
+            placeholder="예: 2022년 아이 출산, 삶의 의미를 찾았다...",
+            max_chars=1000, height=80
+        )
+        memo_4 = st.text_area(
+            "4. 일, 직업, 소명에 있어서 현재의 고민을 상세히 기술해 주십시오.",
+            placeholder="직업, 커리어, 소명에 대한 고민...",
+            max_chars=1000, height=80
+        )
+        memo_5 = st.text_area(
+            "5. 원가족, 현재 가족, 파트너 문제에 있어 과거-현재의 고민과 해결 노력을 기술해 주십시오.",
+            placeholder="가족 관계, 파트너 관계에 대한 고민...",
+            max_chars=1000, height=80
+        )
+        memo_6 = st.text_area(
+            "6. 장애, 건강, 질병에 있어 과거-현재 히스토리와 해결되지 않은 이유 및 본인의 생각을 기술해 주십시오.",
+            placeholder="건강, 질병 히스토리와 생각...",
+            max_chars=1000, height=80
+        )
+
+        # 메모 합치기
+        memo_parts = []
+        if memo_1: memo_parts.append(f"[인상적 이벤트] {memo_1}")
+        if memo_2: memo_parts.append(f"[불행했던 시기] {memo_2}")
+        if memo_3: memo_parts.append(f"[행복했던 시기] {memo_3}")
+        if memo_4: memo_parts.append(f"[직업/소명 고민] {memo_4}")
+        if memo_5: memo_parts.append(f"[가족/파트너] {memo_5}")
+        if memo_6: memo_parts.append(f"[건강/질병] {memo_6}")
+        notes = "\n\n".join(memo_parts)
 
         st.markdown("---")
 
