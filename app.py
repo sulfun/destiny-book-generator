@@ -183,8 +183,18 @@ def save_order(order_data):
                 "생시": {"number": int(order_data.get("hour", 0))},
                 "생분": {"number": int(order_data.get("minute", 0))},
                 "출생도시": {"rich_text": [{"text": {"content": order_data.get("city", "")}}]},
-                "메모": {"rich_text": [{"text": {"content": order_data.get("notes", "")}}]},
+                "메모": {"rich_text": [{"text": {"content": (order_data.get("notes", "") or "")[:2000]}}]},
             }
+            # 유입경로 (선택값이 있을 때만)
+            referral = order_data.get("referral", "")
+            if referral:
+                # "스레드 (@id)" 형태에서 플랫폼명 추출
+                referral_source = referral.split(" (")[0] if " (" in referral else referral
+                referral_id = referral.split("(")[1].rstrip(")") if "(" in referral else ""
+                if referral_source in ["스레드", "페이스북", "인스타그램", "레딧", "기타"]:
+                    properties["유입경로"] = {"select": {"name": referral_source}}
+                if referral_id:
+                    properties["유입ID"] = {"rich_text": [{"text": {"content": referral_id}}]}
             notion.pages.create(
                 parent={"database_id": NOTION_DB_ID},
                 properties=properties
