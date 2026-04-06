@@ -573,9 +573,24 @@ def page_customer():
         with col2:
             gender = st.selectbox("성별 *", ["여성", "남성"])
             phone = st.text_input("연락처", placeholder="010-0000-0000")
+            referral_source = st.selectbox(
+                "운명책을 어디서 알게 되셨나요? *",
+                ["선택해주세요", "스레드", "페이스북", "인스타그램", "레딧", "기타"]
+            )
+            referral_id = st.text_input("해당 플랫폼 ID", placeholder="@username")
 
         st.markdown("---")
         st.subheader("🗓️ 출생 일시")
+        st.markdown("""
+        <p style="color: #cc3333; font-size: 0.85rem; font-weight: 600; line-height: 1.8; margin-bottom: 10px;">
+        ※ 반드시 "양력" 생일을 입력하십시오.<br>
+        ※ 생시가 부정확한 분들은 절대 신청하지 마십시오.<br>
+        <span style="font-weight: 400; font-size: 0.8rem;">
+        5분만으로도 ASC(점성학 차트 어센던트)가 변합니다. 뛰어난 술사에게 생시보정 받은 후 신청하십시오.
+        아래 이벤트를 상세히 기술하는 이유 역시 생시 검증을 위해서입니다.
+        생시가 틀리다고 생각되면 운명책 출력이 불가합니다.</span>
+        </p>
+        """, unsafe_allow_html=True)
 
         col3, col4, col5 = st.columns(3)
         with col3:
@@ -697,6 +712,7 @@ def page_customer():
                     "minute": birth_minute,
                     "city": city,
                     "notes": notes,
+                    "referral": f"{referral_source} ({referral_id})" if referral_source != "선택해주세요" else "",
                 }
 
                 if city == "기타 (직접 입력)":
