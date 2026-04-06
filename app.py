@@ -583,7 +583,7 @@ def page_customer():
         st.subheader("🗓️ 출생 일시")
         st.markdown("""
         <p style="color: #cc3333; font-size: 0.85rem; font-weight: 600; line-height: 1.8; margin-bottom: 10px;">
-        ※ 반드시 "양력" 생일을 입력하십시오.<br>
+        ※ 반드시 <span style="color: #ff0000; font-weight: 700;">"양력"</span> 생일을 입력하십시오.<br>
         ※ 생시가 부정확한 분들은 절대 신청하지 마십시오.<br>
         <span style="font-weight: 400; font-size: 0.8rem;">
         5분만으로도 ASC(점성학 차트 어센던트)가 변합니다. 뛰어난 술사에게 생시보정 받은 후 신청하십시오.
@@ -608,6 +608,10 @@ def page_customer():
                                          format_func=lambda x: f"{x:02d}분")
 
         st.subheader("📍 출생지")
+        st.markdown("""
+        <p style="color: #cc3333; font-size: 0.83rem; font-weight: 600; margin-bottom: 10px;">
+        ※ 현재 대한민국 출생자들만 신청 가능합니다.</p>
+        """, unsafe_allow_html=True)
         city = st.selectbox("출생 도시 *", list(CITY_OPTIONS.keys()))
 
         if city == "기타 (직접 입력)":
