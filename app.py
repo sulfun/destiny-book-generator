@@ -587,7 +587,11 @@ def page_customer():
                 "운명책을 어디서 알게 되셨나요? *",
                 ["선택해주세요", "스레드", "페이스북", "인스타그램", "레딧", "기타"]
             )
-            referral_id = st.text_input("해당 플랫폼 ID", placeholder="@username")
+            referral_id = st.text_input(
+                "본인의 플랫폼 ID *",
+                placeholder="@본인_아이디 (예: @sujin_lee)",
+                help="⚠️ 운영자 ID가 아닌, 신청자 본인의 ID를 입력해 주세요."
+            )
 
         st.markdown("---")
         st.subheader("🗓️ 출생 일시")
