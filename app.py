@@ -182,7 +182,11 @@ def save_order(order_data):
                 "생일": {"number": int(order_data.get("day", 0))},
                 "생시": {"number": int(order_data.get("hour", 0))},
                 "생분": {"number": int(order_data.get("minute", 0))},
-                "출생도시": {"rich_text": [{"text": {"content": order_data.get("city", "")}}]},
+                "출생도시": {"rich_text": [{"text": {"content": (
+                    f"{order_data.get('city', '')} ({order_data.get('city_detail', '')})"
+                    if order_data.get("city_detail")
+                    else order_data.get("city", "")
+                )}}]},
                 "메모": {"rich_text": [{"text": {"content": (order_data.get("notes", "") or "")[:2000]}}]},
             }
             # 유입경로 (선택값이 있을 때만)
@@ -627,17 +631,21 @@ def page_customer():
         ※ 현재 대한민국 출생자들만 신청 가능합니다.</p>
         """, unsafe_allow_html=True)
         city = st.selectbox("출생 도시 *", list(CITY_OPTIONS.keys()))
+        st.markdown("""
+        <p style="font-size: 0.78rem; color: #999; margin-top: -10px;">
+        출생지가 보기에 없는 경우, 가장 가까운 장소를 선택하고 아래에 직접 기입해 주세요.</p>
+        """, unsafe_allow_html=True)
+        city_custom_text = st.text_input(
+            "출생지 직접 입력 (선택)",
+            placeholder="예: 울산, 천안, 목포, 평양 등",
+            help="목록에 없는 도시에서 출생한 경우 여기에 적어주세요. 위 목록에서 가장 가까운 도시도 함께 선택해 주세요."
+        )
 
         if city == "기타 (직접 입력)":
-            col6, col7, col8 = st.columns(3)
-            with col6:
-                city_custom = st.text_input("도시명", placeholder="Beijing")
-            with col7:
-                lat_custom = st.number_input("위도", value=37.5665, format="%.4f")
-            with col8:
-                lon_custom = st.number_input("경도", value=126.9780, format="%.4f")
-            tz_custom = st.text_input("타임존", value="Asia/Seoul",
-                                       help="예: Asia/Seoul, America/New_York, Europe/London")
+            st.markdown("""
+            <p style="font-size: 0.78rem; color: #cc3333; margin-top: -5px;">
+            ⚠️ '기타'를 선택한 경우, 위 칸에 출생 도시를 반드시 기입해 주세요.</p>
+            """, unsafe_allow_html=True)
 
         st.markdown("---")
         st.subheader("📝 추가 메모 (선택)")
@@ -728,16 +736,11 @@ def page_customer():
                     "day": birth_date.day,
                     "hour": birth_hour,
                     "minute": birth_minute,
-                    "city": city,
+                    "city": city if city != "기타 (직접 입력)" else (city_custom_text or "기타"),
+                    "city_detail": city_custom_text if city_custom_text else "",
                     "notes": notes,
                     "referral": f"{referral_source} ({referral_id})" if referral_source != "선택해주세요" else "",
                 }
-
-                if city == "기타 (직접 입력)":
-                    order_data["city_custom"] = city_custom
-                    order_data["lat"] = lat_custom
-                    order_data["lon"] = lon_custom
-                    order_data["tz"] = tz_custom
 
                 order_id = save_order(order_data)
 
