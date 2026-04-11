@@ -46,6 +46,12 @@ from main import collect_all_charts, run_pipeline
 
 NOTION_DB_ID = "231274d036864a249614327bb9fdeed9"
 
+# 결제 정보
+PAYMENT_AMOUNT = "119,000원"
+PAYMENT_BANK = "국민은행"
+PAYMENT_ACCOUNT = "642002-04-036645"
+PAYMENT_HOLDER = "이수진"
+
 def get_notion_client():
     """Notion 클라이언트 생성"""
     try:
@@ -197,6 +203,92 @@ Produced by The Architect
         return True
     except Exception as e:
         print(f"  ❌ 이메일 발송 실패: {e}")
+        return False
+
+
+def send_payment_notice_email(to_email, client_name, order_id):
+    """선정 완료 후 입금 안내 이메일 발송"""
+    sender = os.environ.get("GMAIL_SENDER", "societyalef@gmail.com")
+    password = os.environ.get("GMAIL_APP_PASSWORD")
+
+    if not password:
+        print(f"  ⚠️  GMAIL_APP_PASSWORD 미설정 → 이메일 발송 생략")
+        return False
+
+    msg = MIMEMultipart()
+    msg["From"] = f"세계대예언가이자 인간운명판독기 <{sender}>"
+    msg["To"] = to_email
+    msg["Subject"] = f"[세계대예언가] 운명책 입금 안내 — {client_name}님"
+
+    body = f"""{client_name}님, 안녕하세요.
+
+세계대예언가이자 인간운명판독기입니다.
+
+{client_name}님의 운명책 신청이 선정되었습니다.
+축하드립니다.
+
+아래 계좌로 입금 확인 후, 운명책 제작이 시작됩니다.
+
+━━━━━━━━━━━━━━━━━━━━━
+금액: {PAYMENT_AMOUNT}
+입금 계좌: {PAYMENT_BANK} {PAYMENT_ACCOUNT}
+예금주: {PAYMENT_HOLDER}
+━━━━━━━━━━━━━━━━━━━━━
+
+※ 입금자명을 신청자 본인 이름으로 해주세요.
+※ 입금 확인 후 영업일 기준 3~5일 내 운명책이 이메일로 발송됩니다.
+
+감사합니다.
+
+—
+세계대예언가이자 인간운명판독기 드림
+"""
+    msg.attach(MIMEText(body, "plain", "utf-8"))
+
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(sender, password)
+            server.sendmail(sender, to_email, msg.as_string())
+        print(f"  ✅ 입금 안내 발송 완료 → {to_email}")
+        return True
+    except Exception as e:
+        print(f"  ❌ 입금 안내 발송 실패: {e}")
+        return False
+
+
+def send_payment_notice_sms(phone, client_name):
+    """솔라피(Solapi) API로 입금 안내 문자 발송"""
+    api_key = os.environ.get("SOLAPI_API_KEY")
+    api_secret = os.environ.get("SOLAPI_API_SECRET")
+    sender_phone = os.environ.get("SOLAPI_SENDER", "")
+
+    if not api_key or not api_secret or not sender_phone:
+        print(f"  ⚠️  SOLAPI 환경변수 미설정 → 문자 발송 생략")
+        return False
+
+    try:
+        from solapi import SolapiMessageService
+    except ImportError:
+        print("  ⚠️  solapi 패키지 미설치 → pip install solapi-sms")
+        return False
+
+    text = (
+        f"[세계대예언가] {client_name}님, 운명책 신청이 선정되었습니다. "
+        f"입금안내: {PAYMENT_BANK} {PAYMENT_ACCOUNT} ({PAYMENT_HOLDER}) "
+        f"{PAYMENT_AMOUNT}. 입금자명은 본인 이름으로 부탁드립니다."
+    )
+
+    try:
+        messaging = SolapiMessageService(api_key, api_secret)
+        result = messaging.send_one({
+            "to": phone.replace("-", ""),
+            "from": sender_phone,
+            "text": text,
+        })
+        print(f"  ✅ 문자 발송 완료 → {phone}")
+        return True
+    except Exception as e:
+        print(f"  ❌ 문자 발송 실패: {e}")
         return False
 
 
