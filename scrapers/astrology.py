@@ -217,18 +217,23 @@ def calculate_astrology(year, month, day, hour, minute, city, lat, lon, tz_str):
             planets[node_name] = data
 
     # 하우스 데이터
+    HOUSE_ATTR_NAMES = [
+        "first_house", "second_house", "third_house", "fourth_house",
+        "fifth_house", "sixth_house", "seventh_house", "eighth_house",
+        "ninth_house", "tenth_house", "eleventh_house", "twelfth_house",
+    ]
     houses = {}
-    for i in range(1, 13):
-        house_attr = f"house_{i}" if hasattr(subject, f"house_{i}") else None
+    for i, attr_name in enumerate(HOUSE_ATTR_NAMES, 1):
         try:
-            house_list = subject.houses_list if hasattr(subject, 'houses_list') else []
-            if house_list and i <= len(house_list):
-                h = house_list[i-1]
+            h = getattr(subject, attr_name, None)
+            if h:
                 houses[i] = {
                     "sign": SIGN_KR.get(h.sign, h.sign) if hasattr(h, 'sign') else "",
                     "degree": round(h.position, 2) if hasattr(h, 'position') else 0,
                     "meaning": HOUSE_MEANINGS.get(i, ""),
                 }
+            else:
+                houses[i] = {"sign": "", "degree": 0, "meaning": HOUSE_MEANINGS.get(i, "")}
         except Exception:
             houses[i] = {"sign": "", "degree": 0, "meaning": HOUSE_MEANINGS.get(i, "")}
 
