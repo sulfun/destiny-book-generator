@@ -173,6 +173,7 @@ def save_order(order_data):
                 "주문번호": {"title": [{"text": {"content": order_id}}]},
                 "상태": {"select": {"name": "접수완료"}},
                 "이름(한글)": {"rich_text": [{"text": {"content": order_data.get("name_kr", "")}}]},
+                "이름(한문)": {"rich_text": [{"text": {"content": order_data.get("name_hanja", "")}}]},
                 "이름(영문)": {"rich_text": [{"text": {"content": order_data.get("name_en", "")}}]},
                 "이메일": {"email": order_data.get("email", "") or None},
                 "전화번호": {"phone_number": order_data.get("phone", "") or None},
@@ -568,6 +569,7 @@ def page_customer():
     <p>· 메일로 받아보실 때는 운명책 넘버가 제목에 달려 있습니다</p>
     <p>· 넘버 1024까지 <strong style="color: #c9a96e;">빛과 혼의 멤버</strong> 가입 자격이 주어집니다</p>
     <p>· 본 운명책은 1024 넘버링 이후 일반인에게 전면 자동화로 오픈됩니다</p>
+    <p>· 본인이 잘못 입력한 데이터에 대해서는 책임지지 않습니다. 다시 신청하시고 재입금 하십시오.</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -581,6 +583,11 @@ def page_customer():
 
         with col1:
             name_kr = st.text_input("이름 (한국어) *", placeholder="홍길동")
+            name_hanja = st.text_input(
+                "한문이름",
+                placeholder="洪 넓을 홍 / 吉 길할 길 / 東 동녘 동",
+                help="한자와 독음, 뜻을 모두 정확하게 적을 것 (예: 月 달 월). 한자 이름이 없으면 비워두세요."
+            )
             name_en = st.text_input("이름 (영문)", placeholder="Gildong Hong", help="수비학 분석에 사용")
             email = st.text_input("이메일 *", placeholder="you@email.com", help="완성된 운명책을 보내드립니다")
 
@@ -727,6 +734,7 @@ def page_customer():
             else:
                 order_data = {
                     "name_kr": name_kr,
+                    "name_hanja": name_hanja,
                     "name_en": name_en,
                     "email": email,
                     "phone": phone,
