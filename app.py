@@ -543,14 +543,10 @@ def page_customer():
     # === PRICING ===
     st.markdown("""
     <div style="text-align: center; margin: 25px 0;">
-        <p style="font-family: 'Noto Serif KR', serif; font-size: 1rem; color: #999;
-                  text-decoration: line-through; margin-bottom: 2px;">₩ 199,000</p>
         <p style="font-family: 'Noto Serif KR', serif; font-size: 2.2rem; color: #1a1a2e;
-                  margin: 0; font-weight: 700;">₩ 119,000</p>
+                  margin: 0; font-weight: 700;">₩ 199,000</p>
         <p style="font-size: 0.85rem; color: #c9a96e; letter-spacing: 1px; margin-top: 4px;">
             한정 22권 · BETA EDITION</p>
-        <p style="font-size: 0.78rem; color: #aaa; margin-top: 8px;">
-            정가 출시 후에는 이 가격으로 구매할 수 없습니다</p>
     </div>
     """, unsafe_allow_html=True)
 
