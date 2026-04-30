@@ -47,7 +47,7 @@ from main import collect_all_charts, run_pipeline
 NOTION_DB_ID = "231274d036864a249614327bb9fdeed9"
 
 # 결제 정보
-PAYMENT_AMOUNT = "199,000원"
+PAYMENT_AMOUNT = "299,000원"
 PAYMENT_BANK = "국민은행"
 PAYMENT_ACCOUNT = "642002-04-036645"
 PAYMENT_HOLDER = "이수진"

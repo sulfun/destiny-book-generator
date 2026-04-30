@@ -546,7 +546,7 @@ def page_customer():
         <p style="font-family: 'Noto Serif KR', serif; font-size: 1rem; color: #999;
                   text-decoration: line-through; margin-bottom: 2px;">₩ 399,000</p>
         <p style="font-family: 'Noto Serif KR', serif; font-size: 2.2rem; color: #1a1a2e;
-                  margin: 0; font-weight: 700;">₩ 199,000</p>
+                  margin: 0; font-weight: 700;">₩ 299,000</p>
         <p style="font-size: 0.85rem; color: #c9a96e; letter-spacing: 1px; margin-top: 4px;">
             한정 22권 · BETA EDITION</p>
         <p style="font-size: 0.78rem; color: #aaa; margin-top: 8px;">
