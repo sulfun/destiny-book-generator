@@ -8,9 +8,15 @@ Human Design Chart Calculator
 휴먼디자인 = 점성학(태양 위치) + 주역(I Ching 64괘) + 카발라 + 차크라 + 양자물리학
 """
 
-import swisseph as swe
 from datetime import datetime, timedelta
 import math
+
+# swisseph(C확장)는 일부 Python 버전(예: 3.14)에서 import가 실패할 수 있다.
+# 앱 전체가 죽지 않도록 지연 import 처리한다.
+try:
+    import swisseph as swe
+except Exception:
+    swe = None
 
 
 # === 주역 64괘 → 휴먼디자인 게이트 매핑 ===
@@ -316,6 +322,8 @@ def calculate_human_design(year, month, day, hour, minute, city="Seoul", lat=37.
     Returns:
         dict: 휴먼디자인 차트 데이터
     """
+    if swe is None:
+        return {"error": "휴먼디자인 라이브러리(swisseph) 로드 실패: 사용 가능한 Python 버전(3.11~3.12)에서 실행해주세요."}
 
     # 1. Personality (의식) - 출생 시점의 행성 위치
     personality_positions = get_planet_positions(year, month, day, hour, minute)

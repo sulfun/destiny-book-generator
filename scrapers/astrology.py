@@ -5,9 +5,12 @@ Astrology Chart Calculator using Kerykeion
 서양 점성학 (Modern/Placidus), 베딕, 헬레니스틱 차트 데이터 생성
 """
 
-from kerykeion import AstrologicalSubject
 from datetime import datetime
 import json
+
+# kerykeion(내부적으로 swisseph C확장 사용)은 일부 Python 버전에서
+# import 자체가 실패할 수 있다. 앱 전체가 죽지 않도록 지연(lazy) import 처리.
+# 점성학 차트는 수기(캡처 기반)로 작성하므로 자동계산이 없어도 신청/주문 기능은 동작해야 한다.
 
 
 # === 행성 한국어 매핑 ===
@@ -181,6 +184,11 @@ def calculate_astrology(year, month, day, hour, minute, city, lat, lon, tz_str):
         dict: 점성학 차트 데이터
     """
     try:
+        from kerykeion import AstrologicalSubject
+    except Exception as e:
+        return {"error": f"점성학 라이브러리(kerykeion/swisseph) 로드 실패: {str(e)}"}
+
+    try:
         subject = AstrologicalSubject(
             name="Client",
             year=year,
@@ -217,23 +225,18 @@ def calculate_astrology(year, month, day, hour, minute, city, lat, lon, tz_str):
             planets[node_name] = data
 
     # 하우스 데이터
-    HOUSE_ATTR_NAMES = [
-        "first_house", "second_house", "third_house", "fourth_house",
-        "fifth_house", "sixth_house", "seventh_house", "eighth_house",
-        "ninth_house", "tenth_house", "eleventh_house", "twelfth_house",
-    ]
     houses = {}
-    for i, attr_name in enumerate(HOUSE_ATTR_NAMES, 1):
+    for i in range(1, 13):
+        house_attr = f"house_{i}" if hasattr(subject, f"house_{i}") else None
         try:
-            h = getattr(subject, attr_name, None)
-            if h:
+            house_list = subject.houses_list if hasattr(subject, 'houses_list') else []
+            if house_list and i <= len(house_list):
+                h = house_list[i-1]
                 houses[i] = {
                     "sign": SIGN_KR.get(h.sign, h.sign) if hasattr(h, 'sign') else "",
                     "degree": round(h.position, 2) if hasattr(h, 'position') else 0,
                     "meaning": HOUSE_MEANINGS.get(i, ""),
                 }
-            else:
-                houses[i] = {"sign": "", "degree": 0, "meaning": HOUSE_MEANINGS.get(i, "")}
         except Exception:
             houses[i] = {"sign": "", "degree": 0, "meaning": HOUSE_MEANINGS.get(i, "")}
 
