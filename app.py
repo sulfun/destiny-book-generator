@@ -475,6 +475,46 @@ def page_customer():
 
     st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
 
+    # === SUBSTACK 연재 ===
+    st.markdown("""
+    <div style="max-width: 640px; margin: 0 auto; padding: 20px 0; text-align: center;">
+        <p style="font-family: 'Noto Serif KR', serif; font-size: 1.05rem;
+                  color: #1a1a2e; margin-bottom: 15px;">연재 · 후기 · 기록</p>
+        <p style="color: #555; font-size: 0.9rem; line-height: 1.8; margin-bottom: 20px;">
+            운명책이 만들어지기까지의 과정과 실제 후기를<br>서브스택에서 연재하고 있습니다.</p>
+        <a href="https://lifeonearthlog.substack.com" target="_blank"
+           style="display: inline-block; padding: 12px 32px;
+                  background: #1a1a2e; color: #c9a96e;
+                  text-decoration: none; font-size: 0.9rem;
+                  letter-spacing: 1px; border: 1px solid #c9a96e;">
+            SUBSTACK 보러가기 →
+        </a>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
+
+    # === 운명책 견본 PDF ===
+    st.markdown("""
+    <div style="max-width: 640px; margin: 0 auto; padding: 20px 0; text-align: center;">
+        <p style="font-family: 'Noto Serif KR', serif; font-size: 1.05rem;
+                  color: #1a1a2e; margin-bottom: 15px;">운명책 견본</p>
+        <p style="color: #555; font-size: 0.9rem; line-height: 1.8; margin-bottom: 20px;">
+            실제 운명책의 구성과 분위기를 미리 확인하실 수 있습니다.<br>
+            <span style="font-size: 0.8rem; color: #999;">
+            (개인정보 보호를 위해 가명·발췌본으로 구성되었습니다)</span></p>
+        <a href="app/static/운명책_견본_SAMPLE.pdf" target="_blank"
+           style="display: inline-block; padding: 12px 32px;
+                  background: #1a1a2e; color: #c9a96e;
+                  text-decoration: none; font-size: 0.9rem;
+                  letter-spacing: 1px; border: 1px solid #c9a96e;">
+            견본 PDF 보기 →
+        </a>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
+
     # === WHAT MAKES IT DIFFERENT ===
     st.markdown("""
     <div style="max-width: 640px; margin: 0 auto; padding: 20px 0;
