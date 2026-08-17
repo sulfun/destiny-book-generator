@@ -503,7 +503,7 @@ def page_customer():
             실제 운명책의 구성과 분위기를 미리 확인하실 수 있습니다.<br>
             <span style="font-size: 0.8rem; color: #999;">
             (개인정보 보호를 위해 가명·발췌본으로 구성되었습니다)</span></p>
-        <a href="https://lifeonearthlog.substack.com/p/sample" target="_blank"
+        <a href="https://lifeonearthlog.substack.com/p/0" target="_blank"
            style="display: inline-block; padding: 12px 32px;
                   background: #1a1a2e; color: #c9a96e;
                   text-decoration: none; font-size: 0.9rem;
