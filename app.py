@@ -637,6 +637,11 @@ def page_customer():
                 placeholder="@본인_아이디 (예: @sujin_lee)",
                 help="⚠️ 운영자 ID가 아닌, 신청자 본인의 ID를 입력해 주세요."
             )
+            membership = st.selectbox(
+                "멤버십 가입 여부 *",
+                ["선택해주세요", "가입 완료", "미가입 (신청 후 가입 예정)", "미가입"],
+                help="멤버십 가입자에게만 제작되며, 가입자 우선으로 진행됩니다."
+            )
 
         st.markdown("---")
         st.subheader("🗓️ 출생 일시")
@@ -782,6 +787,7 @@ def page_customer():
                     "city_detail": city_custom_text if city_custom_text else "",
                     "notes": notes,
                     "referral": f"{referral_source} ({referral_id})" if referral_source != "선택해주세요" else "",
+                    "membership": membership if membership != "선택해주세요" else "",
                 }
 
                 order_id = save_order(order_data)
