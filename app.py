@@ -580,6 +580,25 @@ def page_customer():
 
     st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
 
+    # === MEMBERSHIP ===
+    st.markdown("""
+    <div style="max-width: 640px; margin: 0 auto; padding: 20px 0; text-align: center;">
+        <p style="font-family: 'Noto Serif KR', serif; font-size: 1.05rem;
+                  color: #1a1a2e; margin-bottom: 10px;">멤버십 가입</p>
+        <p style="color: #cc0000; font-size: 0.88rem; font-weight: 600; margin-bottom: 18px;">
+            멤버십 미가입자는 운명책을 신청할 수 없습니다.</p>
+        <a href="https://lifeonearthlog.substack.com/p/1?r=88sfq4" target="_blank"
+           style="display: inline-block; padding: 12px 32px;
+                  background: #1a1a2e; color: #c9a96e;
+                  text-decoration: none; font-size: 0.9rem;
+                  letter-spacing: 1px; border: 1px solid #c9a96e;">
+            멤버십 가입하기 →
+        </a>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<hr class="gold-divider">', unsafe_allow_html=True)
+
     # === PRICING ===
     st.markdown("""
     <div style="text-align: center; margin: 25px 0;">
@@ -642,6 +661,12 @@ def page_customer():
                 ["선택해주세요", "가입 완료", "미가입 (신청 후 가입 예정)", "미가입"],
                 help="멤버십 가입자에게만 제작되며, 가입자 우선으로 진행됩니다."
             )
+            st.markdown("""
+            <p style="font-size: 0.78rem; color: #cc0000; margin-top: -10px; font-weight: 600;">
+            ※ 멤버십 미가입자는 운명책을 신청할 수 없습니다.
+            <a href="https://lifeonearthlog.substack.com/p/1?r=88sfq4" target="_blank"
+               style="color: #c9a96e;">멤버십 가입 →</a></p>
+            """, unsafe_allow_html=True)
 
         st.markdown("---")
         st.subheader("🗓️ 출생 일시")
